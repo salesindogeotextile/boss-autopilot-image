@@ -9,13 +9,13 @@ const API_KEY = process.env.GEMINI_API_KEY;
 
 const ai = new GoogleGenAI({ apiKey: API_KEY || "" });
 
-export async function generatePrimaTexImage(inputs: {
+export async function generateBossImage(inputs: {
   articleTitle: string;
   materialColor: string;
   overlayText: string;
   aspectRatio: string;
 }) {
-  const prompt = `Create a professional industrial banner advertisement for PrimaTex.
+  const prompt = `Create a professional industrial banner advertisement for Boss - Indo.
   
 Visual Context Keywords:
 - Project/Asset: "${inputs.articleTitle}"

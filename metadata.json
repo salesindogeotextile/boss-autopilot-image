@@ -1,6 +1,8 @@
 {
-  "name": "Remix: Boss AutoPilot Image",
+  "name": "(Boss) AutoPilot Image - Indo",
   "description": "Professional image generator for civil engineering materials and industrial featured images.",
   "requestFramePermissions": [],
-  "majorCapabilities": []
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
 }

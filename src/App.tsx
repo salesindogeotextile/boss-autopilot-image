@@ -24,14 +24,14 @@ import {
   CloudUpload
 } from 'lucide-react';
 import axios from 'axios';
-import { generatePrimaTexImage } from './services/gemini.ts';
+import { generateBossImage } from './services/gemini.ts';
 import { ImagePromptInputs, GeneratedImage } from './types.ts';
 
 const LOADING_MESSAGES = [
   "Membangun tekstur geosintetik...",
   "Mengatur pencahayaan studio...",
   "Menyelaraskan perspektif 45 derajat...",
-  "Menambahkan elemen branding PrimaTex...",
+  "Menambahkan elemen branding Boss - Indo...",
   "Merender hasil resolusi tinggi...",
   "Memastikan struktur serat terlihat tajam...",
   "Menghaluskan depth of field..."
@@ -114,7 +114,7 @@ export default function App() {
     }, 2500);
 
     try {
-      const result = await generatePrimaTexImage(finalInputs);
+      const result = await generateBossImage(finalInputs);
       const webpUrl = await compressToWebP(result.url);
       
       const newImage = {
@@ -198,8 +198,12 @@ export default function App() {
           .replace(/^-|-$/g, '');
 
         // Upload to WordPress directly from client
-        if (!wpUrl || !wpUsername || !wpPassword) {
-            throw new Error("WordPress credentials missing in sheet");
+        const finalWpUrl = wpUrl || import.meta.env.VITE_WP_URL;
+        const finalWpUsername = wpUsername || import.meta.env.VITE_WP_USERNAME;
+        const finalWpPassword = wpPassword || import.meta.env.VITE_WP_PASSWORD;
+
+        if (!finalWpUrl || !finalWpUsername || !finalWpPassword) {
+            throw new Error("WordPress URL or credentials missing (check sheet or environment configurations)");
         }
 
         const base64Data = result.webpUrl.replace(/^data:image\/webp;base64,/, "");
@@ -216,14 +220,14 @@ export default function App() {
         formData.append('title', projectName);
         formData.append('alt_text', projectName);
 
-        let targetUrl = wpUrl.replace(/\/$/, '');
+        let targetUrl = finalWpUrl.replace(/\/$/, '');
         if (!targetUrl.includes('/wp-json')) targetUrl += '/wp-json/wp/v2/media';
         else if (!targetUrl.endsWith('/wp/v2/media')) targetUrl += '/wp/v2/media';
 
         const wpResponse = await axios.post(targetUrl, formData, {
           headers: {
             'Content-Type': 'multipart/form-data',
-            'Authorization': `Basic ${btoa(`${wpUsername}:${wpPassword}`)}`
+            'Authorization': `Basic ${btoa(`${finalWpUsername}:${finalWpPassword}`)}`
           }
         });
 
@@ -351,7 +355,7 @@ export default function App() {
     const link = document.createElement('a');
     link.href = type === 'webp' && generatedImage.webpUrl ? generatedImage.webpUrl : generatedImage.url;
     const extension = type === 'webp' ? 'webp' : 'png';
-    const fileName = (inputs.articleTitle || inputs.overlayText || 'PrimaTex_Asset').replace(/\s+/g, '_');
+    const fileName = (inputs.articleTitle || inputs.overlayText || 'Boss_Indo_Asset').replace(/\s+/g, '_');
     link.download = `${fileName}_${type.toUpperCase()}_${Date.now()}.${extension}`;
     link.click();
   };
@@ -369,7 +373,7 @@ export default function App() {
         <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="flex flex-col">
-              <span className="font-bold tracking-tight text-xl text-slate-100 uppercase">AutoPilot <span className="text-blue-400 font-light italic capitalize tracking-normal">Image</span> <span className="text-red-600 font-black italic ml-1">Boss</span></span>
+              <span className="font-bold tracking-tight text-xl text-slate-100 uppercase">AutoPilot <span className="text-blue-400 font-light italic capitalize tracking-normal">Image</span> <span className="text-red-600 font-black italic ml-1">Boss - Indo</span></span>
               <span className="text-[9px] uppercase tracking-[0.3em] text-slate-500 font-bold ml-0.5">Industrial Engine</span>
             </div>
           </div>
@@ -709,7 +713,7 @@ export default function App() {
                          Engine Prompt Trace
                       </h4>
                       <div className="text-[9px] text-blue-400 font-bold bg-blue-500/10 px-2 py-0.5 rounded border border-blue-500/20">
-                        VERIFIED BY PRIMATEX
+                        VERIFIED BY BOSS - INDO
                       </div>
                     </div>
                     <div className="text-[10px] font-mono text-slate-400 leading-relaxed opacity-60 max-h-32 overflow-y-auto custom-scrollbar pr-4">
@@ -778,7 +782,7 @@ export default function App() {
               />
             </div>
           </div>
-          <span className="text-slate-400">&copy; 2026 PT PRIMATEX</span>
+          <span className="text-slate-400">&copy; 2026 BOSS - INDO</span>
         </div>
       </footer>
     </div>
