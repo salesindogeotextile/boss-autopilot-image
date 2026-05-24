@@ -24,14 +24,14 @@ import {
   CloudUpload
 } from 'lucide-react';
 import axios from 'axios';
-import { generatePrimaTexImage } from './services/gemini.ts';
+import { generateINDOGEOTEXTILEImage } from './services/gemini.ts';
 import { ImagePromptInputs, GeneratedImage } from './types.ts';
 
 const LOADING_MESSAGES = [
   "Membangun tekstur geosintetik...",
   "Mengatur pencahayaan studio...",
   "Menyelaraskan perspektif 45 derajat...",
-  "Menambahkan elemen branding PrimaTex...",
+  "Menambahkan elemen branding Indogeotex...",
   "Merender hasil resolusi tinggi...",
   "Memastikan struktur serat terlihat tajam...",
   "Menghaluskan depth of field..."
@@ -114,7 +114,7 @@ export default function App() {
     }, 2500);
 
     try {
-      const result = await generatePrimaTexImage(finalInputs);
+      const result = await generateoINDOGEOTEXTILEImage(finalInputs);
       const webpUrl = await compressToWebP(result.url);
       
       const newImage = {
@@ -445,7 +445,7 @@ export default function App() {
     const link = document.createElement('a');
     link.href = type === 'webp' && generatedImage.webpUrl ? generatedImage.webpUrl : generatedImage.url;
     const extension = type === 'webp' ? 'webp' : 'png';
-    const fileName = (inputs.articleTitle || inputs.overlayText || 'PrimaTex_Asset').replace(/\s+/g, '_');
+    const fileName = (inputs.articleTitle || inputs.overlayText || 'INDOGEOTEXTILE _Asset').replace(/\s+/g, '_');
     link.download = `${fileName}_${type.toUpperCase()}_${Date.now()}.${extension}`;
     link.click();
   };
@@ -803,7 +803,7 @@ export default function App() {
                          Engine Prompt Trace
                       </h4>
                       <div className="text-[9px] text-blue-400 font-bold bg-blue-500/10 px-2 py-0.5 rounded border border-blue-500/20">
-                        VERIFIED BY PRIMATEX
+                        VERIFIED BY INDOGEOTEXTILE
                       </div>
                     </div>
                     <div className="text-[10px] font-mono text-slate-400 leading-relaxed opacity-60 max-h-32 overflow-y-auto custom-scrollbar pr-4">
